@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Sign Up • SmartBinX</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+	<header class="landing-nav">
+		<div class="container nav-inner" style="display:flex; justify-content:space-between; align-items:center;">
+			<div class="brand" style="display:flex; gap:12px; align-items:center;">
+				<div class="logo-dot"></div>
+				<div>
+					<div class="brand-title">SmartBinX</div>
+					<div class="brand-sub">Next-Gen Waste Segregation</div>
+				</div>
+			</div>
+			<nav class="nav-links" style="display:flex; gap:32px;">
+				<a href="../index.html">Home</a>
+				<a id="navHow" href="how.html">How we work</a>
+				<a href="#">About</a>
+				<a href="#">Contact</a>
+			</nav>
+			<div class="nav-cta" style="display:flex; gap:12px;">
+				<a class="btn ghost" href="auth.html">Login / Sign Up</a>
+			</div>
+		</div>
+	</header>
+	<main class="container auth-container" style="max-width:480px; margin:40px auto;">
+		<section class="card" style="padding:32px 28px; box-shadow:0 4px 24px rgba(34,197,94,0.10); border-radius:18px;">
+			<h2 style="text-align:center; margin-bottom:24px;">Create Your Account</h2>
+			<form id="signupForm" class="login-form" autocomplete="on">
+				<div class="form-grid" style="gap:18px;">
+					<div class="input-row full">
+						<label for="suName">Full Name</label>
+						<input id="suName" type="text" placeholder="Your name" required style="width:100%;padding:10px 12px;font-size:1rem;border-radius:6px;border:1px solid #d1d5db;" />
+					</div>
+					<div class="input-row">
+						<label for="suEmail">Email</label>
+						<input id="suEmail" type="email" placeholder="you@example.com (must end with .com)" pattern="^[^\s@]+@[^\s@]+\.com$" style="width:100%;padding:10px 12px;font-size:1rem;border-radius:6px;border:1px solid #d1d5db;" />
+					</div>
+					<div class="input-row">
+						<label for="suPhone">Phone</label>
+						<input id="suPhone" type="tel" placeholder="10-digit phone (numbers only)" pattern="^\d{10}$" inputmode="numeric" maxlength="10" style="width:100%;padding:10px 12px;font-size:1rem;border-radius:6px;border:1px solid #d1d5db;" />
+					</div>
+					<div class="input-row">
+						<label for="suPassword">Password</label>
+						<input id="suPassword" type="password" placeholder="Create a password" required style="width:100%;padding:10px 12px;font-size:1rem;border-radius:6px;border:1px solid #d1d5db;" />
+					</div>
+					<div class="input-row">
+						<label for="suRole">Role</label>
+						<select id="suRole" class="select" style="width:100%;padding:10px 12px;font-size:1rem;border-radius:6px;border:1px solid #d1d5db;">
+							<option value="resident">Resident</option>
+							<option value="secretary">Secretary</option>
+							<option value="municipal">Municipal</option>
+						</select>
+					</div>
+					<div class="input-row">
+						<label for="suResidentId">Resident ID (if Resident)</label>
+						<input id="suResidentId" type="text" placeholder="e.g., RES-00X" style="width:100%;padding:10px 12px;font-size:1rem;border-radius:6px;border:1px solid #d1d5db;" />
+					</div>
+					<div class="input-row full">
+						<button class="btn primary" type="submit" style="width:100%;padding:16px 0;font-size:1.15rem;letter-spacing:0.04em;border-radius:10px;box-shadow:0 2px 8px rgba(34,197,94,0.12);background:linear-gradient(135deg,#22c55e,#16a34a);">Create Account &rarr;</button>
+					</div>
+				</div>
+				<small class="muted">For demo, accounts are stored in your browser only.</small>
+			</form>
+		</section>
+	</main>
+	<!-- <script>
+	const signupForm = document.getElementById('signupForm');
+	signupForm.addEventListener('submit', (e) => {
+		e.preventDefault();
+		const name = document.getElementById('suName').value.trim();
+		const email = document.getElementById('suEmail').value.trim();
+		const phone = document.getElementById('suPhone').value.trim();
+		const password = document.getElementById('suPassword').value;
+		const role = document.getElementById('suRole').value;
+		const residentId = document.getElementById('suResidentId').value.trim();
+		if (window.swm && window.swm.auth && window.swm.auth.signup) {
+			window.swm.auth.signup({ name, email, phone, password, role, residentId: residentId || undefined });
+		}
+		// Redirect based on role
+		if (role === 'resident') {
+			window.location.href = 'resident.html';
+		} else if (role === 'secretary') {
+			window.location.href = 'secretary.html';
+		} else if (role === 'municipal') {
+			window.location.href = 'municipal.html';
+		}
+	});
+	</script> -->
+
+		<script>
+		const signupForm = document.getElementById('signupForm');
+		signupForm.addEventListener('submit', (e) => {
+				e.preventDefault();
+				const name = document.getElementById('suName').value.trim();
+				const email = document.getElementById('suEmail').value.trim();
+				const phone = document.getElementById('suPhone').value.trim();
+				const password = document.getElementById('suPassword').value;
+				const role = document.getElementById('suRole').value;
+				const residentId = document.getElementById('suResidentId').value.trim();
+				if (window.swm && window.swm.auth && window.swm.auth.signup) {
+						window.swm.auth.signup({ name, email, phone, password, role, residentId: residentId || undefined });
+				}
+				// Redirect based on role
+				if (role === 'resident') {
+						window.location.href = 'resident.html';
+				} else if (role === 'secretary') {
+						window.location.href = 'secretary.html';
+				} else if (role === 'municipal') {
+						window.location.href = 'municipal.html';
+				}
+		});
+		</script>
+
+</body>
+</html>

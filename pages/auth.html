@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Login / Sign Up • SmartBinX</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+	<!-- <div class="topbar"><div class="inner"><div class="brand">SmartBinX • Login</div><div class="toolbar"><a class="pill" href="../index.html">← Back to Home</a></div></div></div> -->
+	<!-- <header class="site-header">
+		<h1>Access Your Dashboard</h1>
+		<p class="subtitle">Use email/phone to log in or create a new account</p>
+	</header> -->
+
+	<header class="landing-nav">
+    <div class="container nav-inner" style="display:flex; justify-content:space-between; align-items:center;">
+        <div class="brand" style="display:flex; gap:12px; align-items:center;">
+            <div class="logo-dot"></div>
+            <div>
+                <div class="brand-title">SmartBinX</div>
+                <div class="brand-sub">Next-Gen Waste Segregation</div>
+            </div>
+        </div>
+        <nav class="nav-links" style="display:flex; gap:32px;">
+            <a href="../index.html">Home</a>
+            <a id="navHow" href="how.html">How we work</a>
+            <a href="#">About</a>
+            <a href="#">Contact</a>
+        </nav>
+        <div class="nav-cta" style="display:flex; gap:12px;">
+            <a class="btn ghost" href="auth.html">Login / Sign Up</a>
+        </div>
+    </div>
+</header>
+	<main class="container auth-container">
+		<section class="card">
+			<div class="tabs">
+				<button id="tabLogin" class="tab active" type="button">Login</button>
+				<button id="tabSignup" class="tab" type="button">Sign Up</button>
+			</div>
+			<form id="loginForm" class="login-form" autocomplete="on">
+				<div class="form-grid">
+					<div class="input-row full">
+						<label for="loginIdentifier">Email or Phone</label>
+						<input id="loginIdentifier" type="text" placeholder="you@example.com (must end with .com) or 10-digit phone" required />
+					</div>
+					<div class="input-row full">
+						<label for="loginPassword">Password</label>
+						<input id="loginPassword" type="password" placeholder="••••••••" required />
+					</div>
+					<div class="input-row">
+						<label for="loginRole">Role</label>
+						<select id="loginRole" class="select">
+							<option value="resident">Resident</option>
+							<option value="secretary">Secretary</option>
+							<option value="municipal">Municipal</option>
+						</select>
+					</div>
+					<div class="input-row">
+						<label for="loginResidentId">Resident ID (if Resident)</label>
+						<input id="loginResidentId" type="text" placeholder="e.g., RES-001" />
+					</div>
+					<div class="input-row full">
+						<button class="btn primary" type="submit" style="width:100%;padding:16px 0;font-size:1.15rem;letter-spacing:0.04em;border-radius:10px;box-shadow:0 2px 8px rgba(34,197,94,0.12);background:linear-gradient(135deg,#22c55e,#16a34a);">Login &rarr;</button>
+						<a href="signup.html" class="btn ghost" style="width:100%;margin-top:12px;padding:14px 0;font-size:1.05rem;letter-spacing:0.03em;border-radius:10px;box-shadow:0 1px 4px rgba(34,197,94,0.08);display:inline-block;text-align:center;">Go to Signup</a>
+					</div>
+				</div>
+			</form>
+
+			<form id="signupForm" class="login-form" style="display:none" autocomplete="on">
+				<div class="form-grid">
+					<div class="input-row full">
+						<label for="suName">Full Name</label>
+						<input id="suName" type="text" placeholder="Your name" required />
+					</div>
+					<div class="input-row">
+						<label for="suEmail">Email</label>
+						<input id="suEmail" type="email" placeholder="you@example.com (must end with .com)" pattern="^[^\s@]+@[^\s@]+\.com$" />
+					</div>
+					<div class="input-row">
+						<label for="suPhone">Phone</label>
+						<input id="suPhone" type="tel" placeholder="10-digit phone (numbers only)" pattern="^\d{10}$" inputmode="numeric" maxlength="10" />
+					</div>
+					<div class="input-row">
+						<label for="suPassword">Password</label>
+						<input id="suPassword" type="password" placeholder="Create a password" required />
+					</div>
+					<div class="input-row">
+						<label for="suRole">Role</label>
+						<select id="suRole" class="select">
+							<option value="resident">Resident</option>
+							<option value="secretary">Secretary</option>
+							<option value="municipal">Municipal</option>
+						</select>
+					</div>
+					<div class="input-row">
+						<label for="suResidentId">Resident ID (if Resident)</label>
+						<input id="suResidentId" type="text" placeholder="e.g., RES-00X" />
+					</div>
+					<div class="input-row full">
+						<a href="signup.html" class="btn primary" style="width:100%;padding:16px 0;font-size:1.15rem;letter-spacing:0.04em;border-radius:10px;box-shadow:0 2px 8px rgba(34,197,94,0.12);background:linear-gradient(135deg,#22c55e,#16a34a);display:inline-block;text-align:center;">Create Account &rarr;</a>
+					</div>
+				</div>
+				<small class="muted">For demo, accounts are stored in your browser only.</small>
+			</form>
+		</section>
+	</main>
+<!-- 
+<footer class="site-footer">
+		<div class="container">
+			<div class="grid" style="grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 32px; align-items: flex-start;">
+			<div>
+				<div class="brand" style="margin-bottom: 16px; display:flex; gap: 14px; align-items:center;">
+					<div class="logo-dot"></div>
+					<div>
+						<div class="brand-title">SmartBinX</div>
+						<div class="brand-sub">Next-Gen Waste Segregation</div>
+					</div>
+				</div>
+				<p class="muted" style="max-width:440px">Leading the future of sustainable waste management with innovative technology and environmental responsibility.</p>
+				<div style="margin-top:12px">
+					<div style="margin:6px 0">📞 +91XXXXXXXXXX</div>
+					<div style="margin:6px 0">✉️ SmartbinX@gmail.com</div>
+					<div style="margin:6px 0">📍 Lokmanya Tilak College of Engineering, Koparkhairane, Navi Mumbai</div>
+				</div>
+			</div>
+			<div>
+				<h4 style="margin:0 0 10px">Services</h4>
+				<ul class="link-list" style="list-style:none; padding:0; margin:0;">
+					<li><a href="#">Waste Collection</a></li>
+					<li><a href="#">Recycling Services</a></li>
+					<li><a href="#">Hazardous Waste</a></li>
+					<li><a href="#">Bulk Waste Removal</a></li>
+					<li><a href="#">Electronic Waste</a></li>
+					<li><a href="#">Smart Solutions</a></li>
+				</ul>
+			</div>
+			<div>
+				<h4 style="margin:0 0 10px">Company</h4>
+				<ul class="link-list" style="list-style:none; padding:0; margin:0;">
+					<li><a href="#">About Us</a></li>
+					<li><a href="#">Our Team</a></li>
+</footer> -->
+				<!-- Footer will be injected dynamically -->
+
+
+		<script>
+		// demo login
+		const loginForm = document.getElementById('loginForm');
+		loginForm.addEventListener('submit', (e) => {
+			e.preventDefault();
+			const identifier = document.getElementById('loginIdentifier').value.trim();
+			const password = document.getElementById('loginPassword').value;
+			const role = document.getElementById('loginRole').value;
+			const residentId = document.getElementById('loginResidentId').value.trim();
+
+			// For demo, store user info in localStorage
+			let user = {
+				name: identifier,
+				email: identifier.includes('@') ? identifier : '',
+				phone: identifier.match(/^\d{10}$/) ? identifier : '',
+				password,
+				role,
+				residentId: residentId || (role === 'resident' ? 'RES-' + Math.floor(Math.random()*10000) : undefined),
+				flat: 'A-101'
+			};
+			localStorage.setItem('currentUser', JSON.stringify(user));
+
+			if (role === 'resident') {
+				window.location.href = 'resident.html';
+			} else if (role === 'secretary') {
+				window.location.href = 'secretary.html';
+			} else if (role === 'municipal') {
+				window.location.href = 'municipal.html';
+			}
+		});
+
+		// signup
+		const signupForm = document.getElementById('signupForm');
+		signupForm.addEventListener('submit', (e) => {
+			e.preventDefault();
+			const name = document.getElementById('suName').value.trim();
+			const email = document.getElementById('suEmail').value.trim();
+			const phone = document.getElementById('suPhone').value.trim();
+			const password = document.getElementById('suPassword').value;
+			const role = document.getElementById('suRole').value;
+			const residentId = document.getElementById('suResidentId').value.trim();
+			window.swm.auth.signup({ name, email, phone, password, role, residentId: residentId || undefined });
+			// Redirect based on role
+			if (role === 'resident') {
+				window.location.href = 'resident.html';
+			} else if (role === 'secretary') {
+				window.location.href = 'secretary.html';
+			} else if (role === 'municipal') {
+				window.location.href = 'municipal.html';
+			}
+		});
+
+		// standard footer
+		if (window.swm && window.swm.utils && window.swm.utils.injectFooter) {
+			window.swm.utils.injectFooter();
+		}
+		const yearEls = document.querySelectorAll('#year');
+		yearEls.forEach(el => el.textContent = new Date().getFullYear());
+		</script>
+</body>
+</html>
+
+
