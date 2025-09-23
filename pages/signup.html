@@ -13,7 +13,7 @@
 	<header class="landing-nav">
 		<div class="container nav-inner" style="display:flex; justify-content:space-between; align-items:center;">
 			<div class="brand" style="display:flex; gap:12px; align-items:center;">
-				<div class="logo-dot"></div>
+				<img src="../SmartBinX Logo Design.png" alt="SmartBinX Logo" style="height:52px; width:auto; border-radius:12px; box-shadow:0 2px 12px rgba(34,197,94,0.12); margin-right:14px;" />
 				<div>
 					<div class="brand-title">SmartBinX</div>
 					<div class="brand-sub">Next-Gen Waste Segregation</div>
@@ -41,7 +41,7 @@
 					</div>
 					<div class="input-row">
 						<label for="suEmail">Email</label>
-						<input id="suEmail" type="email" placeholder="you@example.com (must end with .com)" pattern="^[^\s@]+@[^\s@]+\.com$" style="width:100%;padding:10px 12px;font-size:1rem;border-radius:6px;border:1px solid #d1d5db;" />
+					<input id="suEmail" type="email" placeholder="you@example.com (must end with .com)" pattern="^[^\s@]+@[^\s@]+\.com$" style="width:100%;padding:10px 12px;font-size:1rem;border-radius:6px;border:1px solid #d1d5db;" oninput="this.value=this.value.replace(/\s/g,'')" onpaste="event.preventDefault(); var text = (event.clipboardData || window.clipboardData).getData('text'); this.value += text.replace(/\s/g,'');" />
 					</div>
 					<div class="input-row">
 						<label for="suPhone">Phone</label>
@@ -96,26 +96,51 @@
 	</script> -->
 
 		<script>
+		// Prevent spaces in email field (JS fallback for older browsers)
+		document.getElementById('suEmail').addEventListener('input', function(e) {
+		  this.value = this.value.replace(/\s/g, '');
+		});
+
+		function isValidEmail(email) {
+		  return /^[^\s@]+@[^\s@]+\.com$/.test(email);
+		}
+		function isValidPhone(phone) {
+		  return /^\d{10}$/.test(phone);
+		}
+
 		const signupForm = document.getElementById('signupForm');
 		signupForm.addEventListener('submit', (e) => {
-				e.preventDefault();
-				const name = document.getElementById('suName').value.trim();
-				const email = document.getElementById('suEmail').value.trim();
-				const phone = document.getElementById('suPhone').value.trim();
-				const password = document.getElementById('suPassword').value;
-				const role = document.getElementById('suRole').value;
-				const residentId = document.getElementById('suResidentId').value.trim();
-				if (window.swm && window.swm.auth && window.swm.auth.signup) {
-						window.swm.auth.signup({ name, email, phone, password, role, residentId: residentId || undefined });
-				}
-				// Redirect based on role
-				if (role === 'resident') {
-						window.location.href = 'resident.html';
-				} else if (role === 'secretary') {
-						window.location.href = 'secretary.html';
-				} else if (role === 'municipal') {
-						window.location.href = 'municipal.html';
-				}
+			e.preventDefault();
+			const name = document.getElementById('suName').value.trim();
+			const email = document.getElementById('suEmail').value.trim();
+			const phone = document.getElementById('suPhone').value.trim();
+			const password = document.getElementById('suPassword').value;
+			const role = document.getElementById('suRole').value;
+			const residentId = document.getElementById('suResidentId').value.trim();
+
+			// Validation: email and phone
+			if (!isValidEmail(email)) {
+			  alert('Please enter a valid email address (must contain @, end with .com, and have no spaces).');
+			  return;
+			}
+			if (!isValidPhone(phone)) {
+			  alert('Please enter a valid 10-digit phone number.');
+			  return;
+			}
+
+			// Save signup form data
+			localStorage.setItem('signupFormData', JSON.stringify({ name, email, phone, password, role, residentId }));
+			if (window.swm && window.swm.auth && window.swm.auth.signup) {
+				window.swm.auth.signup({ name, email, phone, password, role, residentId: residentId || undefined });
+			}
+			// Redirect based on role
+			if (role === 'resident') {
+				window.location.href = 'resident.html';
+			} else if (role === 'secretary') {
+				window.location.href = 'secretary.html';
+			} else if (role === 'municipal') {
+				window.location.href = 'municipal.html';
+			}
 		});
 		</script>
 

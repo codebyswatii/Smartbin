@@ -3,131 +3,150 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Municipal Dashboard • Smart Waste</title>
+	<title>Municipal Dashboard • SmartBinX</title>
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="../assets/css/styles.css" />
+	<!-- Add inside <head> -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
 </head>
 <body>
-	<div class="topbar"><div class="inner"><div class="brand">Smart Waste • Municipal</div><div class="toolbar"><a class="pill" id="switchRole" href="file:///C:/public/pages/auth.html">Switch Role</a><button id="logoutBtn" class="btn ghost">Logout</button></div></div></div>
-    <header class="site-header">
-        <h1>Municipal Dashboard</h1>
-        <p class="subtitle">Bin and sensor alerts, area compliance</p>
+	<header class="landing-nav" style="background-color:#49544f;">
+        <div class="container nav-inner" style="display:flex; justify-content:space-between; align-items:center;">
+            <div class="brand" style="display:flex; gap:12px; align-items:center;">
+                <img src="../SmartBinX Logo Design.png" alt="SmartBinX Logo" style="height:52px; width:auto; border-radius:12px; box-shadow:0 2px 12px rgba(34,197,94,0.12); margin-right:14px;" />
+                <div>
+                    <div class="brand-title">SmartBinX</div>
+                    <div class="brand-sub">Next-Gen Waste Segregation</div>
+                </div>
+            </div>
+            <nav class="nav-links" style="display:flex; gap:32px; ">
+                <a href="/index.html" style="color: #fff;">Home</a>
+                <a id="navHow" href="how.html" style="color: #fff;">How we work</a>
+                <a href="#motto" style="color: #fff;">About</a>
+                <a href="#contact" style="color: #fff;">Contact</a>
+            </nav>
+            <div class="nav-cta" style="display:flex; gap:12px;">
+                <a id="navAuth" class="btn ghost" href="pages/auth.html">Login / Sign Up</a>
+                <a class="btn" href="#contact">Get Quote</a>
+            </div>
+        </div>
     </header>
-<!-- Footer will be injected dynamically -->
+
+	<main style="max-width:1100px; margin:28px auto; padding:0 16px;">
+  <!-- Dashboard top bar -->
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+    <h1 style="margin:0; font-size:22px;">Municipal Authority Dashboard</h1>
+    <a class="btn ghost" href="../index.html">← Back to Login</a>
+  </div>
+
+  <!-- Dashboard sections -->
+  <section class="container">
+    <!-- Left column: Alerts + Sensors + WiFi -->
+    <div>
+      <div class="card">
+        <h2>Bin Fill Alerts</h2>
+        <div id="fillAlerts" class="alerts-list"></div>
+        <p class="small-muted">Shows bins near capacity. Red = critical.</p>
+      </div>
+
+      <div class="card" style="margin-top:16px;">
+        <h2>Battery & Sensor Calibration</h2>
+        <table class="sensor-table" id="sensorTable">
+          <thead>
+            <tr><th>Sensor ID</th><th>Bin</th><th>Status</th><th>Battery</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+
+      <div class="card" style="margin-top:16px;">
+        <h2>WiFi / SMS Alerts</h2>
+        <button class="btn" id="simulateWifiBtn">Simulate WiFi Failure</button>
+        <div id="smsBanner" class="sms-banner"></div>
+      </div>
+    </div>
+
+    <!-- Right column: Compliance chart + Summary -->
+    <div>
+      <div class="card">
+        <h2>Area Compliance Report</h2>
+        <canvas id="areaComplianceChart" width="400" height="260"></canvas>
+      </div>
+      <div class="card" style="margin-top:16px;">
+        <h2>Quick Summary</h2>
+        <ul style="padding-left:18px; margin:8px 0;">
+          <li id="summaryBins">Bins critical: 0</li>
+          <li id="summaryLowBattery">Low battery: 0</li>
+          <li id="summarySensors">Sensors needing calibration: 0</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+  const mockBins = [
+    { id: 'Bin-1', fill: 80, area: 'Sector 12' },
+    { id: 'Bin-2', fill: 45, area: 'Sector 7' },
+    { id: 'Bin-3', fill: 95, area: 'Sector 3' }
+  ];
+  const mockSensors = [
+    { id: 'S-101', bin: 'Bin-1', battery: 44, calibrated: false },
+    { id: 'S-102', bin: 'Bin-2', battery: 82, calibrated: true  },
+    { id: 'S-103', bin: 'Bin-3', battery: 12, calibrated: false }
+  ];
+
+  function renderFillAlerts() {
+    const c = document.getElementById('fillAlerts');
+    c.innerHTML='';
+    mockBins.forEach(b => {
+      let alert = document.createElement('div');
+      alert.className = b.fill >= 90 ? 'alert danger' : (b.fill >= 75 ? 'alert warning' : 'alert success');
+      alert.textContent = `${b.id} (${b.area}) — ${b.fill}% full`;
+      c.appendChild(alert);
+    });
+    document.getElementById('summaryBins').textContent = 
+      `Bins critical: ${mockBins.filter(b=>b.fill>=90).length}`;
+  }
+
+  function renderSensorTable() {
+    const tb = document.querySelector('#sensorTable tbody');
+    tb.innerHTML='';
+    mockSensors.forEach(s => {
+      const tr = document.createElement('tr');
+      const status = (!s.calibrated ? 'Calibration due' : 'OK') + (s.battery<20 ? ' • Low battery' : '');
+      tr.innerHTML = `<td>${s.id}</td><td>${s.bin}</td><td>${status}</td><td>${s.battery}%</td>`;
+      tb.appendChild(tr);
+    });
+  }
+
+  function initAreaChart() {
+    new Chart(document.getElementById('areaComplianceChart'), {
+      type: 'line',
+      data: { labels: ['May','Jun','Jul'], datasets:[{label:'Compliance %', data:[62,70,78], borderColor:'#2ecc71', fill:true}] },
+      options: { plugins:{legend:{display:false}}, scales:{y:{suggestedMin:0,suggestedMax:100}} }
+    });
+  }
+
+  document.getElementById('simulateWifiBtn').onclick = () => {
+    document.getElementById('smsBanner').style.display='block';
+    document.getElementById('smsBanner').textContent='WiFi Failure detected — SMS sent.';
+  };
+
+  (function init() {
+    renderFillAlerts();
+    renderSensorTable();
+    initAreaChart();
+  })();
+</script>
+
 <script src="../assets/js/injectFooter.js"></script>
-						<li><a href="#">Partnerships</a></li>
-						<li><a href="#">Contact Us</a></li>
-					</ul>
-				</div>
-				<div>
-					<h4 style="margin:0 0 10px">Support</h4>
-					<ul class="link-list" style="list-style:none; padding:0; margin:0;">
-						<li><a href="#">Help Center</a></li>
-						<li><a href="#">Documentation</a></li>
-						<li><a href="#">API Reference</a></li>
-						<li><a href="#">System Status</a></li>
-						<li><a href="#">Report Issue</a></li>
-						<li><a href="#">Feedback</a></li>
-					</ul>
-				</div>
-				<div>
-					<h4 style="margin:0 0 10px">Legal</h4>
-					<ul class="link-list" style="list-style:none; padding:0; margin:0;">
-						<li><a href="#">Privacy Policy</a></li>
-						<li><a href="#">Terms of Service</a></li>
-						<li><a href="#">Cookie Policy</a></li>
-						<li><a href="#">Environmental Policy</a></li>
-						<!-- <footer class="site-footer" style="background: linear-gradient(90deg, #14532d 0%, #166534 100%); color: #fff;">
-							<div class="container">
-							<div class="grid" style="grid-template-columns: 2fr 1fr 1fr 1fr 1fr; gap: 32px; align-items: flex-start;">
-									<div>
-										<div class="brand" style="margin-bottom: 12px; display:flex; gap:10px; align-items:center;">
-											<div class="logo-dot"></div>
-											<div>
-												<div class="brand-title">SmartBinX</div>
-												<div class="brand-sub">Next-Gen Waste Segregation</div>
-											</div>
-										</div>
-										<p class="muted" style="max-width:440px; color:#e2e8f0">Leading the future of sustainable waste management with innovative technology and environmental responsibility.</p>
-										<div style="margin-top:12px">
-											<div style="margin:6px 0">📞 +91XXXXXXXXXX</div>
-											<div style="margin:6px 0">✉️ SmartbinX@gmail.com</div>
-											<div style="margin:6px 0">📍 Lokmanya Tilak College of Engineering, Koparkhairane, Navi Mumbai</div>
-										</div>
-									</div>
-									<div>
-										<h4 style="margin:0 0 10px">Services</h4>
-										<ul class="link-list" style="list-style:none; padding:0; margin:0;">
-											<li><a href="#" style="color:#e2e8f0">Waste Collection</a></li>
-											<li><a href="#" style="color:#e2e8f0">Recycling Services</a></li>
-											<li><a href="#" style="color:#e2e8f0">Hazardous Waste</a></li>
-											<li><a href="#" style="color:#e2e8f0">Bulk Waste Removal</a></li>
-											<li><a href="#" style="color:#e2e8f0">Electronic Waste</a></li>
-											<li><a href="#" style="color:#e2e8f0">Smart Solutions</a></li>
-										</ul>
-									</div>
-									<div>
-										<h4 style="margin:0 0 10px">Company</h4>
-										<ul class="link-list" style="list-style:none; padding:0; margin:0;">
-											<li><a href="#" style="color:#e2e8f0">About Us</a></li>
-											<li><a href="#" style="color:#e2e8f0">Our Team</a></li>
-											<li><a href="#" style="color:#e2e8f0">Careers</a></li>
-											<li><a href="#" style="color:#e2e8f0">News & Updates</a></li>
-											<li><a href="#" style="color:#e2e8f0">Partnerships</a></li>
-											<li><a href="#" style="color:#e2e8f0">Contact Us</a></li>
-										</ul>
-									</div>
-									<div>
-										<h4 style="margin:0 0 10px">Support</h4>
-										<ul class="link-list" style="list-style:none; padding:0; margin:0;">
-											<li><a href="#" style="color:#e2e8f0">Help Center</a></li>
-											<li><a href="#" style="color:#e2e8f0">Documentation</a></li>
-											<li><a href="#" style="color:#e2e8f0">API Reference</a></li>
-											<li><a href="#" style="color:#e2e8f0">System Status</a></li>
-											<li><a href="#" style="color:#e2e8f0">Report Issue</a></li>
-											<li><a href="#" style="color:#e2e8f0">Feedback</a></li>
-										</ul>
-									</div>
-									<div>
-										<h4 style="margin:0 0 10px">Legal</h4>
-										<ul class="link-list" style="list-style:none; padding:0; margin:0;">
-											<li><a href="#" style="color:#e2e8f0">Privacy Policy</a></li>
-											<li><a href="#" style="color:#e2e8f0">Terms of Service</a></li>
-											<li><a href="#" style="color:#e2e8f0">Cookie Policy</a></li>
-											<li><a href="#" style="color:#e2e8f0">Environmental Policy</a></li>
-											<li><a href="#" style="color:#e2e8f0">Compliance</a></li>
-											<li><a href="#" style="color:#e2e8f0">Licenses</a></li>
-										</ul>
-									</div>
-								</div>
-
-								<hr style="margin:28px 0; opacity:.15" />
-
-								<div class="grid" style="grid-template-columns: 1fr auto; align-items:center; gap:16px;">
-								<div style="display:flex; gap:14px; align-items:center;">
-										<a class="pill" href="#" style="background:#166534; color:#fff">Facebook</a>
-										<a class="pill" href="#" style="background:#166534; color:#fff">Twitter</a>
-										<a class="pill" href="#" style="background:#166534; color:#fff">LinkedIn</a>
-										<a class="pill" href="#" style="background:#166534; color:#fff">Instagram</a>
-									</div>
-									<div style="color:#e2e8f0">© <span id="year"></span> SmartBinX. All rights reserved.</div>
-								</div>
-
-								<div class="card" style="margin-top:24px; background:#166534; color:#fff;">
-								<div class="grid" style="grid-template-columns: 1fr auto; align-items:center; gap:20px;">
-										<div>
-											<h3 style="margin:0 0 6px">Stay Updated</h3>
-											<p class="muted" style="margin:0; color:#e2e8f0">Subscribe to our newsletter for the latest waste management insights and updates.</p>
-										</div>
-										<form onsubmit="event.preventDefault(); alert('Thanks for subscribing!');" class="toolbar" style="gap:8px">
-											<input type="email" placeholder="Enter your email address" class="input" style="min-width:260px" required />
-											<button class="btn" type="submit" style="background:#14532d; color:#fff">Subscribe</button>
-										</form>
-									</div>
-								</div>
-							</div>
-						</footer> -->
+</body>
+</html>
 
 
+						

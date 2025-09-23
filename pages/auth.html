@@ -16,20 +16,20 @@
 		<p class="subtitle">Use email/phone to log in or create a new account</p>
 	</header> -->
 
-	<header class="landing-nav">
-    <div class="container nav-inner" style="display:flex; justify-content:space-between; align-items:center;">
+	<header class="landing-nav" style="background-color: #49544f;">
+    <div class="container nav-inner" style="display:flex; justify-content:space-between; align-items:center; ">
         <div class="brand" style="display:flex; gap:12px; align-items:center;">
-            <div class="logo-dot"></div>
+			<img src="../SmartBinX Logo Design.png" alt="SmartBinX Logo" style="height:52px; width:auto; border-radius:12px; box-shadow:0 2px 12px rgba(34,197,94,0.12); margin-right:14px;" />
             <div>
                 <div class="brand-title">SmartBinX</div>
                 <div class="brand-sub">Next-Gen Waste Segregation</div>
             </div>
         </div>
         <nav class="nav-links" style="display:flex; gap:32px;">
-            <a href="../index.html">Home</a>
-            <a id="navHow" href="how.html">How we work</a>
-            <a href="#">About</a>
-            <a href="#">Contact</a>
+            <a href="../index.html" style="color: #ffffff;">Home</a>
+            <a id="navHow" href="how.html" style="color: #ffffff;">How we work</a>
+            <a href="#" style="color: #ffffff;">About</a>
+            <a href="#" style="color: #ffffff;">Contact</a>
         </nav>
         <div class="nav-cta" style="display:flex; gap:12px;">
             <a class="btn ghost" href="auth.html">Login / Sign Up</a>
@@ -37,16 +37,16 @@
     </div>
 </header>
 	<main class="container auth-container">
-		<section class="card">
-			<div class="tabs">
+	<section class="card" style="background: #fff; max-width: 420px; margin: 40px auto; border-radius: 18px; box-shadow: 0 4px 24px rgba(34,197,94,0.10); padding: 40px 32px;">
+			<!-- <div class="tabs">
 				<button id="tabLogin" class="tab active" type="button">Login</button>
 				<button id="tabSignup" class="tab" type="button">Sign Up</button>
-			</div>
+			</div> -->
 			<form id="loginForm" class="login-form" autocomplete="on">
-				<div class="form-grid">
+				<div class="form-grid" style="gap: 18px;">
 					<div class="input-row full">
 						<label for="loginIdentifier">Email or Phone</label>
-						<input id="loginIdentifier" type="text" placeholder="you@example.com (must end with .com) or 10-digit phone" required />
+					<input id="loginIdentifier" type="text" required oninput="this.value=this.value.replace(/\s/g,'')" onpaste="event.preventDefault(); var text = (event.clipboardData || window.clipboardData).getData('text'); this.value += text.replace(/\s/g,'');" />
 					</div>
 					<div class="input-row full">
 						<label for="loginPassword">Password</label>
@@ -72,14 +72,14 @@
 			</form>
 
 			<form id="signupForm" class="login-form" style="display:none" autocomplete="on">
-				<div class="form-grid">
+				<div class="form-grid" style="gap: 18px;">
 					<div class="input-row full">
 						<label for="suName">Full Name</label>
 						<input id="suName" type="text" placeholder="Your name" required />
 					</div>
 					<div class="input-row">
 						<label for="suEmail">Email</label>
-						<input id="suEmail" type="email" placeholder="you@example.com (must end with .com)" pattern="^[^\s@]+@[^\s@]+\.com$" />
+					<input id="suEmail" type="email" placeholder="you@example.com (must end with .com)" pattern="^[^\s@]+@[^\s@]+\.com$" oninput="this.value=this.value.replace(/\s/g,'')" onpaste="event.preventDefault(); var text = (event.clipboardData || window.clipboardData).getData('text'); this.value += text.replace(/\s/g,'');" />
 					</div>
 					<div class="input-row">
 						<label for="suPhone">Phone</label>
@@ -149,55 +149,99 @@
 
 
 		<script>
+		// Prevent spaces in email and login fields (JS fallback for older browsers)
+		document.getElementById('suEmail').addEventListener('input', function(e) {
+			this.value = this.value.replace(/\s/g, '');
+		});
+		document.getElementById('loginIdentifier').addEventListener('input', function(e) {
+			this.value = this.value.replace(/\s/g, '');
+		});
+
+		function isValidEmail(email) {
+			return /^[^\s@]+@[^\s@]+\.com$/.test(email);
+		}
+		function isValidPhone(phone) {
+			return /^\d{10}$/.test(phone);
+		}
+
 		// demo login
 		const loginForm = document.getElementById('loginForm');
 		loginForm.addEventListener('submit', (e) => {
-			e.preventDefault();
-			const identifier = document.getElementById('loginIdentifier').value.trim();
-			const password = document.getElementById('loginPassword').value;
-			const role = document.getElementById('loginRole').value;
-			const residentId = document.getElementById('loginResidentId').value.trim();
+				e.preventDefault();
+				const identifier = document.getElementById('loginIdentifier').value.trim();
+				const password = document.getElementById('loginPassword').value;
+				const role = document.getElementById('loginRole').value;
+				const residentId = document.getElementById('loginResidentId').value.trim();
 
-			// For demo, store user info in localStorage
-			let user = {
-				name: identifier,
-				email: identifier.includes('@') ? identifier : '',
-				phone: identifier.match(/^\d{10}$/) ? identifier : '',
-				password,
-				role,
-				residentId: residentId || (role === 'resident' ? 'RES-' + Math.floor(Math.random()*10000) : undefined),
-				flat: 'A-101'
-			};
-			localStorage.setItem('currentUser', JSON.stringify(user));
+				// Validation: identifier must be email or 10-digit phone
+				let isEmail = identifier.includes('@');
+				let isPhone = /^\d{10}$/.test(identifier);
+				if (isEmail && !isValidEmail(identifier)) {
+					alert('Please enter a valid email address (must contain @, end with .com, and have no spaces).');
+					return;
+				}
+				if (!isEmail && !isPhone) {
+					alert('Please enter a valid 10-digit phone number.');
+					return;
+				}
 
-			if (role === 'resident') {
-				window.location.href = 'resident.html';
-			} else if (role === 'secretary') {
-				window.location.href = 'secretary.html';
-			} else if (role === 'municipal') {
-				window.location.href = 'municipal.html';
-			}
+				// For demo, store user info in localStorage
+				let user = {
+						name: identifier,
+						email: isEmail ? identifier : '',
+						phone: isPhone ? identifier : '',
+						password,
+						role,
+						residentId: residentId || (role === 'resident' ? 'RES-' + Math.floor(Math.random()*10000) : undefined),
+						flat: 'A-101'
+				};
+				localStorage.setItem('currentUser', JSON.stringify(user));
+				// Save login form data
+				localStorage.setItem('loginFormData', JSON.stringify({ identifier, password, role, residentId }));
+
+				if (role === 'resident') {
+						window.location.href = 'resident.html';
+				} else if (role === 'secretary') {
+						window.location.href = 'secretary.html';
+				} else if (role === 'municipal') {
+						window.location.href = 'municipal.html';
+				}
 		});
 
 		// signup
 		const signupForm = document.getElementById('signupForm');
 		signupForm.addEventListener('submit', (e) => {
-			e.preventDefault();
-			const name = document.getElementById('suName').value.trim();
-			const email = document.getElementById('suEmail').value.trim();
-			const phone = document.getElementById('suPhone').value.trim();
-			const password = document.getElementById('suPassword').value;
-			const role = document.getElementById('suRole').value;
-			const residentId = document.getElementById('suResidentId').value.trim();
-			window.swm.auth.signup({ name, email, phone, password, role, residentId: residentId || undefined });
-			// Redirect based on role
-			if (role === 'resident') {
-				window.location.href = 'resident.html';
-			} else if (role === 'secretary') {
-				window.location.href = 'secretary.html';
-			} else if (role === 'municipal') {
-				window.location.href = 'municipal.html';
-			}
+				e.preventDefault();
+				const name = document.getElementById('suName').value.trim();
+				const email = document.getElementById('suEmail').value.trim();
+				const phone = document.getElementById('suPhone').value.trim();
+				const password = document.getElementById('suPassword').value;
+				const role = document.getElementById('suRole').value;
+				const residentId = document.getElementById('suResidentId').value.trim();
+
+				// Validation: email and phone
+				if (!isValidEmail(email)) {
+					alert('Please enter a valid email address (must contain @, end with .com, and have no spaces).');
+					return;
+				}
+				if (!isValidPhone(phone)) {
+					alert('Please enter a valid 10-digit phone number.');
+					return;
+				}
+
+				// Save signup form data
+				localStorage.setItem('signupFormData', JSON.stringify({ name, email, phone, password, role, residentId }));
+				if (window.swm && window.swm.auth && window.swm.auth.signup) {
+						window.swm.auth.signup({ name, email, phone, password, role, residentId: residentId || undefined });
+				}
+				// Redirect based on role
+				if (role === 'resident') {
+						window.location.href = 'resident.html';
+				} else if (role === 'secretary') {
+						window.location.href = 'secretary.html';
+				} else if (role === 'municipal') {
+						window.location.href = 'municipal.html';
+				}
 		});
 
 		// standard footer

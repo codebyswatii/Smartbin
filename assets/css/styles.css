@@ -1,3 +1,4 @@
+    /* color: #fff !important; */
 /* Beautiful White & Green UI - Professional Design */
 
 /* Reset & Base */
@@ -309,8 +310,13 @@ section {
 }
 
 .motto {
-    background: #ffffff;
+    background: linear-gradient(90deg, #14532d 0%, #22c55e 100%);
     padding: 80px 0;
+    color: #fff;
+}
+
+.motto-box p {
+    color: #fff;
 }
 
 .cta-band {
@@ -322,10 +328,11 @@ section {
 
 /* Beautiful Site Header */
 .site-header {
-    background: #ffffff;
+    background: #fff;
     padding: 60px 0;
     text-align: center;
     position: relative;
+    
 }
 
 .site-header h1 {
@@ -429,9 +436,9 @@ section {
 }
 
 .site-footer .pill {
-    background: #e2e8f0;
-    /* color: #5E716A; */
-    border: 1px solid #e2e8f0;
+    background: #14532d;
+    color: #fff;
+    border: 1px solid #22c55e;
     margin: 4px;
     font-size: 12px;
     padding: 6px 12px;
@@ -439,11 +446,12 @@ section {
 
 .site-footer .pill:hover {
     background: #fff;
-    color: #5E716A;
+    color: #14532d;
+    border: 1px solid #14532d;
 }
 
 .site-footer .card {
-    background: #6b7c74;
+    background: #49544f;
     border: 1px solid #e2e8f0;
     border-radius: 12px;
     padding: 32px;
@@ -458,8 +466,8 @@ section {
     padding: 10px 12px;
     border-radius: 8px;
     font-size: 15px;
-    width: 160px;
-    min-width: 0;
+    width: 320px;
+    min-width: 220px;
     transition: all 0.3s ease;
 }
 
@@ -489,7 +497,7 @@ section {
 }
 
 .site-footer .muted {
-    color: #9ca3af;
+    color: #fff;
     font-size: 14px;
 }
 
@@ -498,7 +506,7 @@ section {
     width: 100%;
     border-collapse: collapse;
     margin: 24px 0;
-    background: #ffffff;
+    background: #fff;
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
